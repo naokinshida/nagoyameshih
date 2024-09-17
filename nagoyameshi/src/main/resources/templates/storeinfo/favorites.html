@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <div th:replace="~{fragment :: meta}"></div>
+    <div th:replace="~{fragment :: styles}"></div>
+    <title>お気に入り一覧</title>
+</head>
+<body>
+    <div class="nagoyameshi-wrapper">
+        <!-- ヘッダー -->
+        <div th:replace="~{fragment :: header}"></div>
+        <main>
+            <div class="container nagoyameshi-container pb-5">
+                <div class="row justify-content-center">
+                    <div class="col-xxl-9 col-xl-10 col-lg-11">
+                        <nav class="my-3" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                            <ol class="breadcrumb mb-0">
+                                <li class="breadcrumb-item"><a th:href="@{/}">ホーム</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">お気に入り一覧</li>
+                            </ol>
+                        </nav>
+                        <h1 class="mb-3 text-center">お気に入り一覧</h1>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>店舗名</th>
+                                    <th>リスト名</th>
+                                    <th>追加日時</th>
+                                    <th>お気に入り解除</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="favorite : ${favorites}">
+                                    <td th:text="${favorite.getStoreinfo().getStorename()}">店舗名</td> <!-- storeinfo から店舗名を取得 -->
+                                    <td th:text="${favorite.getList()}">リスト名</td>
+                                    <td th:text="${favorite.getCreatedAt()}">追加日時</td>
+                                    <td>
+                                        <form th:action="@{/favorites/{id}(id=${favorite.id})}" method="post">
+                                            <input type="hidden" name="_method" value="delete"/>
+                                            <button type="submit" class="btn btn-danger btn-sm">削除</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <!-- フッター -->
+        <div th:replace="~{fragment :: footer}"></div>
+    </div>
+
+    <div th:replace="~{fragment :: scripts}"></div>
+</body>
+</html>
